@@ -129,5 +129,3 @@ src/
 
 - `npm run build` valida la compilacion de produccion.
 - No hay test runner configurado todavia.
-- La UI de drag and drop del equipo queda preparada por slots, pero no implementada.
-- HeroUI no se incorporo porque Styled Components cubre esta etapa sin sumar peso extra.
