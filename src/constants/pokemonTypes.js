@@ -1,0 +1,22 @@
+export const POKEMON_TYPE_COLORS = {
+  normal: '#8a8f98',
+  fire: '#f97316',
+  water: '#2563eb',
+  electric: '#d9a300',
+  grass: '#16a34a',
+  ice: '#0891b2',
+  fighting: '#dc2626',
+  poison: '#9333ea',
+  ground: '#b7791f',
+  flying: '#4f46e5',
+  psychic: '#db2777',
+  bug: '#65a30d',
+  rock: '#78716c',
+  ghost: '#6d28d9',
+  dragon: '#0f766e',
+  dark: '#334155',
+  steel: '#64748b',
+  fairy: '#ec4899',
+};
+
+export const DEFAULT_TYPE_COLOR = '#475569';
