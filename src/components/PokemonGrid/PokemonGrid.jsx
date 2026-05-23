@@ -2,8 +2,8 @@ import React from 'react';
 import PokemonCard from '@/components/PokemonCard';
 import { Grid, GridItem } from './PokemonGrid.styled';
 
-const PokemonGrid = ({ lastPokemonRef, pokemons, pokemonCount }) => (
-  <Grid aria-label={`${pokemonCount} Pokemon loaded`}>
+const PokemonGrid = ({ lastPokemonRef, pokemons, pokemonCount = pokemons.length }) => (
+  <Grid aria-label={`${pokemonCount} Pokemon cargados`}>
     {pokemons.map((pokemon, index) => {
       const isLastItem = index === pokemons.length - 1;
 

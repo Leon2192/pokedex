@@ -92,7 +92,7 @@ export const SelectorInputWrap = styled.div`
 export const SelectorInput = styled.input`
   width: 100%;
   min-height: 48px;
-  padding: 0 88px 0 14px;
+  padding: 0 46px 0 14px;
   border: 1px solid
     ${({ $hasError, theme }) => ($hasError ? theme.colors.primary : theme.colors.border)};
   border-radius: ${({ theme }) => theme.radii.md};
@@ -113,17 +113,18 @@ export const SelectorInput = styled.input`
 `;
 
 export const SelectorClearButton = styled.button`
+  width: 32px;
   min-height: 32px;
   position: absolute;
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  padding: 0 10px;
+  padding: 0;
   border: 0;
   border-radius: ${({ theme }) => theme.radii.sm};
   color: ${({ theme }) => theme.colors.textMuted};
   background: ${({ theme }) => theme.colors.surfaceMuted};
-  font-size: 0.74rem;
+  font-size: 1rem;
   font-weight: 900;
 
   &:hover:not(:disabled) {

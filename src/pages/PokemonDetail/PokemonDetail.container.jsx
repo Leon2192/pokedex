@@ -5,7 +5,10 @@ import { getQueryDataStatus } from '@/helpers/queryStatus';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { useToast } from '@/hooks/useToast';
 import { ROUTES } from '@/routes';
-import { useGetPokemonByNameOrIdQuery } from '@/services/api/pokemonApi';
+import {
+  useGetPokemonByNameOrIdQuery,
+  useGetPokemonSpeciesByNameOrIdQuery,
+} from '@/services/api/pokemonApi';
 import { addPokemon, MAX_TEAM_SIZE, removePokemon, selectTeam } from '@/store/slices/teamSlice';
 import { formatPokemonHeight, formatPokemonWeight } from '@/utils/formatters';
 import PokemonDetail from './PokemonDetail';
@@ -30,16 +33,19 @@ const PokemonDetailContainer = () => {
   } = useGetPokemonByNameOrIdQuery(name, {
     skip: !name,
   });
+  const { currentData: species } = useGetPokemonSpeciesByNameOrIdQuery(pokemon?.speciesName, {
+    skip: !pokemon?.speciesName,
+  });
 
   const isPokemonInTeam = pokemon
     ? team.some((teamPokemon) => teamPokemon.id === pokemon.id || teamPokemon.name === pokemon.name)
     : false;
   const isTeamFull = team.length >= MAX_TEAM_SIZE;
   const teamButtonLabel = isPokemonInTeam
-    ? 'Remove from team'
+    ? 'Quitar del equipo'
     : isTeamFull
-      ? 'Team full'
-      : 'Add to team';
+      ? 'Equipo completo'
+      : 'Agregar al equipo';
 
   const detail = useMemo(() => {
     if (!pokemon) {
@@ -50,12 +56,16 @@ const PokemonDetailContainer = () => {
       ...pokemon,
       formattedHeight: formatPokemonHeight(pokemon.height),
       formattedWeight: formatPokemonWeight(pokemon.weight),
+      variants: (species?.variants ?? pokemon.variants).map((variant) => ({
+        ...variant,
+        isCurrent: variant.name === pokemon.name,
+      })),
       stats: pokemon.stats.map((stat) => ({
         ...stat,
         percentage: Math.min(100, Math.round((stat.value / STAT_MAX_VALUE) * 100)),
       })),
     };
-  }, [pokemon]);
+  }, [pokemon, species]);
 
   const dataStatus = useMemo(
     () =>
@@ -79,12 +89,12 @@ const PokemonDetailContainer = () => {
 
     if (isPokemonInTeam) {
       dispatch(removePokemon(pokemon.id));
-      showToast(`${pokemon.displayName} removed from your team.`);
+      showToast(`${pokemon.displayName} se quito de tu equipo.`);
       return;
     }
 
     if (isTeamFull) {
-      showToast(`Your team already has ${MAX_TEAM_SIZE} Pokemon.`, 'warning');
+      showToast(`Tu equipo ya tiene ${MAX_TEAM_SIZE} Pokemon.`, 'warning');
       return;
     }
 
@@ -98,7 +108,7 @@ const PokemonDetailContainer = () => {
         types: pokemon.types,
       })
     );
-    showToast(`${pokemon.displayName} added to your team.`);
+    showToast(`${pokemon.displayName} se agrego a tu equipo.`);
   }, [dispatch, isPokemonInTeam, isTeamFull, pokemon, showToast]);
 
   return (

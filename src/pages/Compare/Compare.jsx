@@ -53,10 +53,10 @@ const renderPokemonPanel = (pokemon, label) => (
       <strong>{pokemon.number}</strong>
     </PanelHeader>
     <ImageFrame>
-      <Image src={pokemon.sprite} alt={`${pokemon.displayName} artwork`} />
+      <Image src={pokemon.sprite} alt={`Ilustracion de ${pokemon.displayName}`} />
     </ImageFrame>
     <PanelTitle>{pokemon.displayName}</PanelTitle>
-    <Types aria-label={`${pokemon.displayName} types`}>
+    <Types aria-label={`Tipos de ${pokemon.displayName}`}>
       {pokemon.types.map((type) => (
         <TypeBadge key={type.name} $color={type.color}>
           {type.displayName}
@@ -134,10 +134,11 @@ const renderPokemonSelector = ({
           <SelectorClearButton
             type="button"
             disabled={isSelectorDisabled}
+            aria-label={`Limpiar ${selector.label}`}
             onMouseDown={(event) => event.preventDefault()}
             onClick={() => onSelectorClear(selector.fieldName)}
           >
-            Limpiar
+            x
           </SelectorClearButton>
         ) : null}
       </SelectorInputWrap>
@@ -193,8 +194,8 @@ const Compare = ({
     <Page>
       <Header>
         <div>
-          <Title>Compare</Title>
-          <Intro>Choose two Pokemon and compare their base stats side by side.</Intro>
+          <Title>Comparar</Title>
+          <Intro>Elegi dos Pokemon y compara sus stats base lado a lado.</Intro>
         </div>
         <DataStatusBadge status={dataStatus ?? optionsStatus} />
       </Header>
@@ -225,15 +226,15 @@ const Compare = ({
         })}
 
         <CompareButton type="submit" disabled={isSelectorDisabled || isSubmitting}>
-          Compare
+          Comparar
         </CompareButton>
       </Form>
 
       {!submittedPair && !isComparisonLoading ? (
         <EmptyState>
-          <EmptyStateTitle>No comparison yet</EmptyStateTitle>
+          <EmptyStateTitle>Todavia no hay comparacion</EmptyStateTitle>
           <EmptyStateText>
-            Pick two different Pokemon above to compare their type matchup and base stats.
+            Elegi dos Pokemon diferentes para comparar tipos e indicadores base.
           </EmptyStateText>
         </EmptyState>
       ) : null}
@@ -247,8 +248,8 @@ const Compare = ({
       {!isComparisonLoading && !isComparisonBlockingError && hasComparison ? (
         <>
           <ComparisonGrid>
-            {renderPokemonPanel(pokemonA, 'Pokemon A')}
-            {renderPokemonPanel(pokemonB, 'Pokemon B')}
+            {renderPokemonPanel(pokemonA, 'Primer Pokemon')}
+            {renderPokemonPanel(pokemonB, 'Segundo Pokemon')}
           </ComparisonGrid>
 
           <StatsPanel>

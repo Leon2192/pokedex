@@ -17,13 +17,13 @@ import {
 const TeamPokemonCard = ({ detailPath, imageAlt, onRemove, pokemon, slotIndex }) => (
   <Card data-team-slot={slotIndex}>
     <Header>
-      <Slot>Slot {slotIndex + 1}</Slot>
+      <Slot>Espacio {slotIndex + 1}</Slot>
       <RemoveButton type="button" onClick={onRemove}>
-        Remove
+        Quitar
       </RemoveButton>
     </Header>
 
-    <DetailLink to={detailPath} aria-label={`View ${pokemon.displayName} detail`}>
+    <DetailLink to={detailPath} aria-label={`Ver detalle de ${pokemon.displayName}`}>
       <ImageFrame>
         {pokemon.sprite ? <Image src={pokemon.sprite} alt={imageAlt} /> : null}
       </ImageFrame>
@@ -33,7 +33,7 @@ const TeamPokemonCard = ({ detailPath, imageAlt, onRemove, pokemon, slotIndex })
         <Title>{pokemon.displayName}</Title>
       </Meta>
 
-      <Types aria-label={`${pokemon.displayName} types`}>
+      <Types aria-label={`Tipos de ${pokemon.displayName}`}>
         {(pokemon.types ?? []).map((type) => (
           <TypeBadge key={type.name} $color={type.color}>
             {type.displayName}

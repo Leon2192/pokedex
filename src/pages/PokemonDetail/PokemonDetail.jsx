@@ -36,13 +36,15 @@ import {
   Title,
   TypeBadge,
   Types,
+  VariantBadge,
+  VariantsGrid,
 } from './PokemonDetail.styled';
 
 const renderSkeleton = () => (
   <Page>
     <Actions>
       <BackButton type="button" disabled>
-        Back to Pokedex
+        Volver a la Pokedex
       </BackButton>
     </Actions>
     <SkeletonGrid>
@@ -76,7 +78,7 @@ const PokemonDetail = ({
     <Page>
       <Actions>
         <BackButton type="button" onClick={onBack}>
-          Back to Pokedex
+          Volver a la Pokedex
         </BackButton>
 
         {pokemon ? <DataStatusBadge status={dataStatus} /> : null}
@@ -96,7 +98,7 @@ const PokemonDetail = ({
             <Subtitle>{pokemon.number}</Subtitle>
             <Title>{pokemon.displayName}</Title>
 
-            <Types aria-label={`${pokemon.displayName} types`}>
+            <Types aria-label={`Tipos de ${pokemon.displayName}`}>
               {pokemon.types.map((type) => (
                 <TypeBadge key={type.name} $color={type.color}>
                   {type.displayName}
@@ -104,35 +106,35 @@ const PokemonDetail = ({
               ))}
             </Types>
 
-            <HeroImage src={pokemon.sprite} alt={`${pokemon.displayName} artwork`} />
+            <HeroImage src={pokemon.sprite} alt={`Ilustracion de ${pokemon.displayName}`} />
           </HeroPanel>
 
           <MainPanel>
             <InfoGrid>
               <InfoItem>
-                <InfoLabel>Height</InfoLabel>
+                <InfoLabel>Altura</InfoLabel>
                 <InfoValue>{pokemon.formattedHeight}</InfoValue>
               </InfoItem>
               <InfoItem>
-                <InfoLabel>Weight</InfoLabel>
+                <InfoLabel>Peso</InfoLabel>
                 <InfoValue>{pokemon.formattedWeight}</InfoValue>
               </InfoItem>
             </InfoGrid>
 
             <Panel>
-              <PanelTitle>Abilities</PanelTitle>
+              <PanelTitle>Habilidades</PanelTitle>
               <AbilityList>
                 {pokemon.abilities.map((ability) => (
                   <AbilityBadge key={ability.name}>
                     {ability.displayName}
-                    {ability.isHidden ? ' hidden' : ''}
+                    {ability.isHidden ? ' oculta' : ''}
                   </AbilityBadge>
                 ))}
               </AbilityList>
             </Panel>
 
             <Panel>
-              <PanelTitle>Stats</PanelTitle>
+              <PanelTitle>Estadisticas</PanelTitle>
               <StatsList>
                 {pokemon.stats.map((stat) => (
                   <StatItem key={stat.name}>
@@ -148,6 +150,24 @@ const PokemonDetail = ({
               </StatsList>
             </Panel>
           </MainPanel>
+
+          {pokemon.variants.length > 1 ? (
+            <Panel>
+              <PanelTitle>Variantes</PanelTitle>
+              <VariantsGrid>
+                {pokemon.variants.map((variant) => (
+                  <VariantBadge
+                    key={variant.name}
+                    to={`/pokemon/${variant.name}`}
+                    $isCurrent={variant.isCurrent}
+                  >
+                    {variant.displayName}
+                    {variant.isDefault ? ' / principal' : ''}
+                  </VariantBadge>
+                ))}
+              </VariantsGrid>
+            </Panel>
+          ) : null}
 
           <Panel>
             <PanelTitle>Sprites</PanelTitle>

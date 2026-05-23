@@ -23,7 +23,7 @@ const TeamContainer = () => {
   const handleRemovePokemon = useCallback(
     (pokemon) => {
       dispatch(removePokemon(pokemon.id));
-      showToast(`${pokemon.displayName} removed from your team.`);
+      showToast(`${pokemon.displayName} se quito de tu equipo.`);
     },
     [dispatch, showToast]
   );

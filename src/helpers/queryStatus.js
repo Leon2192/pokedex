@@ -12,21 +12,21 @@ export const getQueryDataStatus = ({
 
   if (!isOnline) {
     return {
-      label: 'Cached offline',
+      label: 'Cache sin conexion',
       tone: 'offline',
     };
   }
 
   if (isFetching) {
     return {
-      label: 'Updating cache',
+      label: 'Actualizando cache',
       tone: 'syncing',
     };
   }
 
   if (!fulfilledTimeStamp) {
     return {
-      label: 'Cached data',
+      label: 'Datos cacheados',
       tone: 'cached',
     };
   }
@@ -35,13 +35,13 @@ export const getQueryDataStatus = ({
 
   if (age <= FRESH_DATA_WINDOW_MS) {
     return {
-      label: 'Fresh data',
+      label: 'Datos frescos',
       tone: 'fresh',
     };
   }
 
   return {
-    label: 'Cached data',
+    label: 'Datos cacheados',
     tone: 'cached',
   };
 };

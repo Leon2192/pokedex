@@ -6,7 +6,7 @@ const ErrorState = ({ message, onRetry, title }) => (
     <Title>{title}</Title>
     <Message>{message}</Message>
     <ActionButton type="button" onClick={onRetry}>
-      Retry
+      Reintentar
     </ActionButton>
   </StateBox>
 );

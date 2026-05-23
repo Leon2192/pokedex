@@ -4,7 +4,7 @@ import { Loader, LoaderDot, LoaderText } from './RouteFallback.styled';
 const RouteFallback = () => (
   <Loader role="status" aria-live="polite">
     <LoaderDot />
-    <LoaderText>Loading</LoaderText>
+    <LoaderText>Cargando</LoaderText>
   </Loader>
 );
 

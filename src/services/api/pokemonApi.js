@@ -1,5 +1,4 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { REHYDRATE } from 'redux-persist';
 import { API_ENDPOINTS, POKEMON_PAGE_SIZE } from '@/constants/api';
 import { ALL_FILTER_VALUE } from '@/constants/filters';
 import { hasActivePokedexFilters, normalizePokedexFilters } from '@/helpers/pokedexFilters';
@@ -7,6 +6,7 @@ import {
   mapNamedResource,
   mapNamedResourceList,
   mapPokemonDetails,
+  mapPokemonSpecies,
 } from '@/helpers/pokemonMappers';
 import {
   filterNamedResourcesBySearch,
@@ -162,15 +162,15 @@ export const pokemonApi = createApi({
   reducerPath: 'pokemonApi',
   baseQuery: axiosBaseQuery(),
   refetchOnReconnect: true,
-  tagTypes: ['Pokemon', 'PokemonList', 'PokemonOptions', 'PokemonTypes', 'PokemonGenerations'],
+  tagTypes: [
+    'Pokemon',
+    'PokemonSpecies',
+    'PokemonList',
+    'PokemonOptions',
+    'PokemonTypes',
+    'PokemonGenerations',
+  ],
   keepUnusedDataFor: 300,
-  extractRehydrationInfo(action, { reducerPath }) {
-    if (action.type === REHYDRATE) {
-      return action.payload?.[reducerPath];
-    }
-
-    return undefined;
-  },
   endpoints: (builder) => ({
     getPokemonList: builder.query({
       async queryFn(args = {}, _queryApi, _extraOptions, baseQuery) {
@@ -277,6 +277,15 @@ export const pokemonApi = createApi({
         { type: 'Pokemon', id: String(nameOrId).toLowerCase() },
       ],
     }),
+    getPokemonSpeciesByNameOrId: builder.query({
+      query: (nameOrId) => ({
+        url: buildPokemonSpeciesPath(nameOrId),
+      }),
+      transformResponse: mapPokemonSpecies,
+      providesTags: (_result, _error, nameOrId) => [
+        { type: 'PokemonSpecies', id: String(nameOrId).toLowerCase() },
+      ],
+    }),
     getPokemonOptions: builder.query({
       async queryFn(_args, _queryApi, _extraOptions, baseQuery) {
         const resourcesResult = await getAllPokemonResources(baseQuery);
@@ -311,6 +320,7 @@ export const pokemonApi = createApi({
 export const {
   useGetPokemonListQuery,
   useGetPokemonByNameOrIdQuery,
+  useGetPokemonSpeciesByNameOrIdQuery,
   useGetPokemonOptionsQuery,
   useGetPokemonTypesQuery,
   useGetPokemonGenerationsQuery,

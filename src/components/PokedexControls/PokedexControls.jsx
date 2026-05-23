@@ -27,13 +27,13 @@ const PokedexControls = ({
 }) => (
   <Controls onSubmit={handleSubmit}>
     <Field>
-      <Label htmlFor="search">Search</Label>
+      <Label htmlFor="search">Buscar</Label>
       <Input
         id="search"
         name="search"
         onBlur={handleBlur}
         onChange={handleSearchChange}
-        placeholder="Name or number"
+        placeholder="Nombre o numero"
         type="search"
         value={values.search}
       />
@@ -41,7 +41,7 @@ const PokedexControls = ({
     </Field>
 
     <Field>
-      <Label htmlFor="type">Type</Label>
+      <Label htmlFor="type">Tipo</Label>
       <Select
         id="type"
         name="type"
@@ -50,7 +50,7 @@ const PokedexControls = ({
         onChange={handleTypeChange}
         value={values.type}
       >
-        <option value="all">All types</option>
+        <option value="all">Todos los tipos</option>
         {typeOptions.map((type) => (
           <option key={type.value} value={type.value}>
             {type.label}
@@ -60,7 +60,7 @@ const PokedexControls = ({
     </Field>
 
     <Field>
-      <Label htmlFor="generation">Generation</Label>
+      <Label htmlFor="generation">Generacion</Label>
       <Select
         id="generation"
         name="generation"
@@ -69,7 +69,7 @@ const PokedexControls = ({
         onChange={handleGenerationChange}
         value={values.generation}
       >
-        <option value="all">All generations</option>
+        <option value="all">Todas las generaciones</option>
         {generationOptions.map((generation) => (
           <option key={generation.value} value={generation.value}>
             {generation.label}
@@ -78,9 +78,9 @@ const PokedexControls = ({
       </Select>
     </Field>
 
-    <ActionButton type="submit">Apply</ActionButton>
+    <ActionButton type="submit">Aplicar</ActionButton>
     <ResetButton type="button" onClick={handleReset}>
-      Clear
+      Limpiar
     </ResetButton>
   </Controls>
 );

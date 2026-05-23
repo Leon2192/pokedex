@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
 const shimmer = keyframes`
@@ -193,6 +194,30 @@ export const AbilityBadge = styled.span`
   background: ${({ theme }) => theme.colors.surfaceMuted};
   font-size: 0.86rem;
   font-weight: 800;
+`;
+
+export const VariantsGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
+export const VariantBadge = styled(Link)`
+  min-height: 32px;
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid
+    ${({ $isCurrent, theme }) => ($isCurrent ? theme.colors.primary : theme.colors.border)};
+  border-radius: ${({ theme }) => theme.radii.sm};
+  color: ${({ $isCurrent, theme }) => ($isCurrent ? theme.colors.primaryDark : theme.colors.text)};
+  background: ${({ theme }) => theme.colors.surfaceMuted};
+  font-size: 0.86rem;
+  font-weight: 900;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
 `;
 
 export const StatsList = styled.div`

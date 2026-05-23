@@ -17,8 +17,8 @@ const LayoutContainer = () => {
   const navItems = useMemo(
     () => [
       { label: 'Pokedex', to: ROUTES.POKEDEX },
-      { label: 'Team', to: ROUTES.TEAM },
-      { label: 'Compare', to: ROUTES.COMPARE },
+      { label: 'Equipo', to: ROUTES.TEAM },
+      { label: 'Comparar', to: ROUTES.COMPARE },
     ],
     []
   );
@@ -31,8 +31,8 @@ const LayoutContainer = () => {
     previousOnlineRef.current = isOnline;
     showToast(
       isOnline
-        ? 'Back online. Fresh data can be loaded again.'
-        : 'You are offline. Cached Pokemon data remains available.',
+        ? 'Volviste a estar online. Ya se pueden cargar datos frescos.'
+        : 'Estas offline. Los datos ya cargados siguen disponibles.',
       isOnline ? 'online' : 'offline',
       NETWORK_TOAST_DURATION
     );

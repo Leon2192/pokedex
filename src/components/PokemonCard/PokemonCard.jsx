@@ -12,7 +12,7 @@ import {
 } from './PokemonCard.styled';
 
 const PokemonCard = ({ detailPath, imageAlt, pokemon }) => (
-  <Card to={detailPath} aria-label={`View ${pokemon.displayName} detail`}>
+  <Card to={detailPath} aria-label={`Ver detalle de ${pokemon.displayName}`}>
     <Header>
       <Number>{pokemon.number}</Number>
       <Title>{pokemon.displayName}</Title>
@@ -23,7 +23,7 @@ const PokemonCard = ({ detailPath, imageAlt, pokemon }) => (
     </ImageFrame>
 
     <Content>
-      <Types aria-label={`${pokemon.displayName} types`}>
+      <Types aria-label={`Tipos de ${pokemon.displayName}`}>
         {pokemon.types.map((type) => (
           <TypeBadge key={type.name} $color={type.color}>
             {type.displayName}

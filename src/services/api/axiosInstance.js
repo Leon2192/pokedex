@@ -11,7 +11,7 @@ export const normalizeApiError = (error) => {
   const status = error.response?.status ?? error.status ?? 'NETWORK_ERROR';
   const data = error.response?.data ?? error.data ?? null;
   const message =
-    data?.message ?? error.message ?? 'The request could not be completed. Please try again.';
+    data?.message ?? error.message ?? 'No se pudo completar la solicitud. Intentalo nuevamente.';
 
   return {
     status,

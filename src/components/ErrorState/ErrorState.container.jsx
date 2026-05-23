@@ -8,24 +8,24 @@ const ErrorStateContainer = ({ error, onRetry }) => {
 
     if (isNetworkError) {
       return {
-        title: 'Network unavailable',
+        title: 'No hay conexion disponible',
         message:
-          'We could not reach PokeAPI. Check your connection or keep using cached data if it is available.',
+          'No pudimos conectar con PokeAPI. Revisa tu conexion o usa los datos ya cargados si estan disponibles.',
       };
     }
 
     if (status === 404) {
       return {
-        title: 'Pokemon not found',
-        message: 'That Pokemon could not be found. Try another name or ID.',
+        title: 'Pokemon no encontrado',
+        message: 'No se encontro ese Pokemon. Proba con otro nombre o ID.',
       };
     }
 
     return {
-      title: 'Something went wrong',
+      title: 'Algo salio mal',
       message:
         error?.message ??
-        'The Pokemon data could not be loaded. Check the connection and try again.',
+        'No se pudieron cargar los datos. Revisa la conexion e intentalo nuevamente.',
     };
   }, [error?.message, error?.status]);
 

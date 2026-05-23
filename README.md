@@ -1,6 +1,6 @@
 # Pokedex Challenge
 
-El proyecto prioriza arquitectura escalable, separacion de responsabilidades, cache con RTK Query, persistencia local y una UX completa para listado, detalle, equipo y comparacion.
+El proyecto prioriza arquitectura escalable, separacion de responsabilidades, cache en memoria con RTK Query, persistencia local del equipo y una UX completa para listado, detalle, equipo y comparacion.
 
 ## Stack
 
@@ -108,7 +108,7 @@ src/
 - El listado se enriquece fuera de la UI para mostrar sprite, numero y tipos.
 - Busqueda y filtros se guardan en query params para soportar refresh y links compartibles.
 - Infinite scroll usa `IntersectionObserver` sobre el ultimo item visible y bloqueos para evitar requests duplicados.
-- `redux-persist` mantiene el equipo y cache de RTK Query; se descartan suscripciones/mutaciones efimeras al persistir.
+- `redux-persist` mantiene el equipo; el cache de RTK Query queda en memoria para evitar persistir datos remotos viejos innecesarios.
 - La app muestra estado online/offline y badges de datos frescos/cacheados.
 - Las notificaciones se centralizan con `useToast` y `components/Toast`.
 - No se agrego libreria de charts: las comparaciones usan barras visuales con Styled Components.
@@ -120,12 +120,12 @@ src/
 - Filtros combinables por tipo y generacion.
 - Query params en `/pokedex`.
 - Infinite scroll con skeletons y estado de fin de resultados.
-- Detalle en `/pokemon/:name` con imagen, sprites, tipos, habilidades, altura, peso y stats.
+- Detalle en `/pokemon/:name` con imagen, sprites, variantes, tipos, habilidades, altura, peso y stats.
 - Equipo en `/team` con maximo 6 Pokemon, persistencia, remove y estado vacio.
 - Comparador en `/compare` con Formik/Yup, selects searchables y stats lado a lado.
-- Loading, error, retry y empty states en vistas principales.
+- Loading, error, retry y estados vacios en vistas principales.
 - Estado de conexion online/offline.
-- Indicadores de datos frescos, cacheados y cache offline.
+- Indicadores de datos frescos, cacheados y cache sin conexion.
 
 ## Calidad y limites actuales
 

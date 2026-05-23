@@ -25,7 +25,7 @@ const Team = ({ maxTeamSize, onRemovePokemon, teamCount, teamSlots, toast }) => 
       <Header>
         <div>
           <Title>Mi Equipo</Title>
-          <Intro>Build a compact team of up to six Pokemon.</Intro>
+          <Intro>Arma un equipo de hasta seis Pokemon.</Intro>
         </div>
         <CountBadge>
           {teamCount}/{maxTeamSize} Pokemon en tu equipo
@@ -36,9 +36,9 @@ const Team = ({ maxTeamSize, onRemovePokemon, teamCount, teamSlots, toast }) => 
         <EmptyCard>
           <EmptyIllustration aria-hidden="true" />
           <EmptyBody>
-            <h2>Your team is empty</h2>
-            <p>Add Pokemon from their detail page and they will stay here after refresh.</p>
-            <BrowseLink to={ROUTES.POKEDEX}>Browse Pokedex</BrowseLink>
+            <h2>Tu equipo esta vacio</h2>
+            <p>Agrega Pokemon desde su detalle y se mantendran aca despues de refrescar.</p>
+            <BrowseLink to={ROUTES.POKEDEX}>Explorar Pokedex</BrowseLink>
           </EmptyBody>
         </EmptyCard>
       ) : null}
@@ -55,7 +55,7 @@ const Team = ({ maxTeamSize, onRemovePokemon, teamCount, teamSlots, toast }) => 
               />
             ) : (
               <EmptySlot key={slot.id} data-team-slot={slot.slotIndex}>
-                <SlotNumber>Slot {slot.slotIndex + 1}</SlotNumber>
+                <SlotNumber>Espacio {slot.slotIndex + 1}</SlotNumber>
               </EmptySlot>
             )
           )}

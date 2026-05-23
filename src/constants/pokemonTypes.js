@@ -20,3 +20,24 @@ export const POKEMON_TYPE_COLORS = {
 };
 
 export const DEFAULT_TYPE_COLOR = '#475569';
+
+export const POKEMON_TYPE_LABELS = {
+  normal: 'Normal',
+  fire: 'Fuego',
+  water: 'Agua',
+  electric: 'Electrico',
+  grass: 'Planta',
+  ice: 'Hielo',
+  fighting: 'Lucha',
+  poison: 'Veneno',
+  ground: 'Tierra',
+  flying: 'Volador',
+  psychic: 'Psiquico',
+  bug: 'Bicho',
+  rock: 'Roca',
+  ghost: 'Fantasma',
+  dragon: 'Dragon',
+  dark: 'Siniestro',
+  steel: 'Acero',
+  fairy: 'Hada',
+};

@@ -50,10 +50,10 @@ const Pokedex = ({
       <Header>
         <div>
           <Title>Pokedex</Title>
-          <Intro>Browse Pokemon from PokeAPI with a scalable React foundation.</Intro>
+          <Intro>Explora Pokemon desde PokeAPI con busqueda, filtros y carga progresiva.</Intro>
         </div>
         <Stats>
-          {totalLoaded} / {totalCount || '-'} loaded
+          {totalLoaded} / {totalCount || '-'} cargados
         </Stats>
         <HeaderMeta>
           <DataStatusBadge status={dataStatus} />
@@ -76,17 +76,21 @@ const Pokedex = ({
       ) : null}
 
       {!showBlockingError && !isInitialLoading && pokemons.length > 0 ? (
-        <PokemonGrid lastPokemonRef={lastPokemonRef} pokemons={pokemons} />
+        <PokemonGrid
+          lastPokemonRef={lastPokemonRef}
+          pokemonCount={totalLoaded}
+          pokemons={pokemons}
+        />
       ) : null}
 
       {!showBlockingError && !isInitialLoading && pokemons.length === 0 ? (
         <EmptyState>
           <EmptyStateBody>
-            <h2>No Pokemon found</h2>
-            <p>Try a different search, type, or generation filter.</p>
+            <h2>No se encontraron Pokemon</h2>
+            <p>Proba con otra busqueda, tipo o generacion.</p>
           </EmptyStateBody>
           <EmptyStateAction type="button" onClick={onClearFilters}>
-            Clear filters
+            Limpiar filtros
           </EmptyStateAction>
         </EmptyState>
       ) : null}
@@ -96,7 +100,7 @@ const Pokedex = ({
       ) : null}
 
       {!showBlockingError && !isInitialLoading && !hasNextPage && pokemons.length > 0 ? (
-        <EndState>End of results</EndState>
+        <EndState>Fin de los resultados</EndState>
       ) : null}
     </Page>
   );

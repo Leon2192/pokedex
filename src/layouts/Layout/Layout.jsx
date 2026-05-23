@@ -17,12 +17,12 @@ const Layout = ({ brandPath, children, isOnline, navItems, networkToast, pathnam
   <AppChrome>
     <Header>
       <Shell>
-        <Brand to={brandPath} aria-label="Pokedex home">
+        <Brand to={brandPath} aria-label="Inicio de la Pokedex">
           <BrandMark aria-hidden="true" />
           <span>Pokedex</span>
         </Brand>
 
-        <Nav aria-label="Main navigation">
+        <Nav aria-label="Navegacion principal">
           {navItems.map((item) => (
             <NavItem key={item.to} to={item.to} $isActive={pathname === item.to}>
               {item.label}
@@ -32,7 +32,7 @@ const Layout = ({ brandPath, children, isOnline, navItems, networkToast, pathnam
 
         <StatusPill $isOnline={isOnline}>
           <StatusDot $isOnline={isOnline} aria-hidden="true" />
-          {isOnline ? 'Online' : 'Offline'}
+          {isOnline ? 'En linea' : 'Sin conexion'}
         </StatusPill>
       </Shell>
     </Header>
