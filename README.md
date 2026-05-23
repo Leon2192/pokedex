@@ -45,6 +45,8 @@ No se usan secretos, tokens ni variables sensibles.
 npm run dev
 npm run build
 npm run preview
+npm run format
+npm run format:check
 ```
 
 ## Arquitectura
