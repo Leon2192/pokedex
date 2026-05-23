@@ -63,7 +63,8 @@ const PokedexContainer = () => {
   const hasNextPage = Boolean(pokemonList?.next) && pokemons.length < (pokemonList?.count ?? 0);
   const isInitialLoading = (isLoading || isFetching) && pokemons.length === 0;
   const isSearchDebouncing = filters.search !== debouncedSearch;
-  const isPaginationLocked = isFetching || isSearchDebouncing;
+  const isPaginationLocked = !isOnline || isError || isFetching || isSearchDebouncing;
+  const canLoadMore = isOnline && !isError && hasNextPage;
   const isFetchingMore = isFetching && pokemons.length > 0;
   const dataStatus = useMemo(
     () =>
@@ -88,7 +89,7 @@ const PokedexContainer = () => {
   }, [handleFiltersChange]);
 
   const handleLoadMore = useCallback(() => {
-    if (!hasNextPage || isPaginationLocked) {
+    if (!canLoadMore || isPaginationLocked) {
       return;
     }
 
@@ -99,17 +100,21 @@ const PokedexContainer = () => {
           : POKEMON_PAGE_SIZE,
       queryKey,
     }));
-  }, [hasNextPage, isPaginationLocked, queryKey]);
+  }, [canLoadMore, isPaginationLocked, queryKey]);
 
   const lastPokemonRef = useInfiniteScroll({
-    hasNextPage,
+    hasNextPage: canLoadMore,
     isFetching: isPaginationLocked,
     onLoadMore: handleLoadMore,
   });
 
   const handleRetry = useCallback(() => {
+    if (!isOnline) {
+      return;
+    }
+
     refetch();
-  }, [refetch]);
+  }, [isOnline, refetch]);
 
   return (
     <Pokedex
@@ -122,6 +127,7 @@ const PokedexContainer = () => {
       isFetchingMore={isFetchingMore}
       isGenerationsLoading={isGenerationsLoading}
       isInitialLoading={isInitialLoading}
+      isOnline={isOnline}
       isTypesLoading={isTypesLoading}
       onClearFilters={handleClearFilters}
       onFiltersChange={handleFiltersChange}

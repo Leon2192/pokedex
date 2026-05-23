@@ -97,9 +97,27 @@ export const EmptyStateAction = styled.button`
   background: ${({ theme }) => theme.colors.primary};
   font-weight: 900;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: ${({ theme }) => theme.colors.primaryDark};
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.64;
+  }
+`;
+
+export const OfflineState = styled.div`
+  min-height: 44px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  border: 1px solid ${({ theme }) => theme.colors.warning};
+  border-radius: ${({ theme }) => theme.radii.md};
+  color: ${({ theme }) => theme.colors.text};
+  background: rgba(245, 158, 11, 0.12);
+  font-size: 0.9rem;
+  font-weight: 900;
 `;
 
 export const EndState = styled.div`

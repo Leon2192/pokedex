@@ -12,6 +12,7 @@ import {
   Header,
   HeaderMeta,
   Intro,
+  OfflineState,
   Page,
   SkeletonGrid,
   Stats,
@@ -33,6 +34,7 @@ const Pokedex = ({
   isFetchingMore,
   isGenerationsLoading,
   isInitialLoading,
+  isOnline,
   isTypesLoading,
   lastPokemonRef,
   onClearFilters,
@@ -43,7 +45,10 @@ const Pokedex = ({
   totalLoaded,
   typeOptions,
 }) => {
-  const showBlockingError = isError && pokemons.length === 0;
+  const hasPokemons = pokemons.length > 0;
+  const showOfflineEmptyState = !isOnline && !hasPokemons && !isInitialLoading;
+  const showOfflineCacheState = !isOnline && hasPokemons;
+  const showBlockingError = isOnline && isError && !hasPokemons;
 
   return (
     <Page>
@@ -71,11 +76,27 @@ const Pokedex = ({
 
       {showBlockingError ? <ErrorState error={error} onRetry={onRetry} /> : null}
 
+      {showOfflineCacheState ? (
+        <OfflineState>Estas sin conexion. Se muestran los datos disponibles en cache.</OfflineState>
+      ) : null}
+
+      {showOfflineEmptyState ? (
+        <EmptyState>
+          <EmptyStateBody>
+            <h2>No hay conexion</h2>
+            <p>No hay datos guardados para mostrar. Volve a intentarlo cuando estes online.</p>
+          </EmptyStateBody>
+          <EmptyStateAction type="button" disabled={!isOnline} onClick={onRetry}>
+            Reintentar
+          </EmptyStateAction>
+        </EmptyState>
+      ) : null}
+
       {!showBlockingError && isInitialLoading ? (
         <SkeletonGrid>{renderSkeletons(SKELETON_COUNT)}</SkeletonGrid>
       ) : null}
 
-      {!showBlockingError && !isInitialLoading && pokemons.length > 0 ? (
+      {!showBlockingError && !isInitialLoading && hasPokemons ? (
         <PokemonGrid
           lastPokemonRef={lastPokemonRef}
           pokemonCount={totalLoaded}
@@ -83,7 +104,7 @@ const Pokedex = ({
         />
       ) : null}
 
-      {!showBlockingError && !isInitialLoading && pokemons.length === 0 ? (
+      {!showOfflineEmptyState && !showBlockingError && !isInitialLoading && !hasPokemons ? (
         <EmptyState>
           <EmptyStateBody>
             <h2>No se encontraron Pokemon</h2>
@@ -95,11 +116,11 @@ const Pokedex = ({
         </EmptyState>
       ) : null}
 
-      {!showBlockingError && isFetchingMore ? (
+      {!showBlockingError && isOnline && isFetchingMore ? (
         <SkeletonGrid>{renderSkeletons(4)}</SkeletonGrid>
       ) : null}
 
-      {!showBlockingError && !isInitialLoading && !hasNextPage && pokemons.length > 0 ? (
+      {!showBlockingError && isOnline && !isInitialLoading && !hasNextPage && hasPokemons ? (
         <EndState>Fin de los resultados</EndState>
       ) : null}
     </Page>
