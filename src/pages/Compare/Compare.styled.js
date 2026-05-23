@@ -10,6 +10,18 @@ const shimmer = keyframes`
   }
 `;
 
+const menuEnter = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 export const Page = styled.section`
   display: grid;
   gap: 24px;
@@ -137,6 +149,7 @@ export const OptionsMenu = styled.div`
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surface};
   box-shadow: 0 18px 38px rgba(23, 32, 51, 0.16);
+  animation: ${menuEnter} 120ms ease-out;
 `;
 
 export const OptionButton = styled.button`

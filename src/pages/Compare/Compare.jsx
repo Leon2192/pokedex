@@ -121,6 +121,7 @@ const renderPokemonSelector = ({
           $hasError={Boolean(selector.error)}
           onBlur={() => onSelectorBlur(selector.fieldName)}
           onChange={(event) => onSelectorSearch(selector.fieldName, event.target.value)}
+          onClick={() => onSelectorFocus(selector.fieldName)}
           onFocus={() => onSelectorFocus(selector.fieldName)}
           placeholder={selector.placeholder}
           role="combobox"
@@ -145,7 +146,7 @@ const renderPokemonSelector = ({
         <OptionsMenu id={listboxId} role="listbox">
           {isOptionsLoading ? <SelectorMessage>Cargando opciones...</SelectorMessage> : null}
           {!isOptionsLoading && selector.options.length === 0 ? (
-            <SelectorMessage>No hay Pokemon para esa busqueda.</SelectorMessage>
+            <SelectorMessage>No se encontraron Pokemon.</SelectorMessage>
           ) : null}
           {!isOptionsLoading
             ? selector.options.map((pokemon) =>

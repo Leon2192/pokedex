@@ -229,9 +229,7 @@ const CompareContainer = () => {
       setFieldValue(fieldName, '', false);
       setFieldTouched(fieldName, false, false);
       setFieldError(fieldName, undefined);
-      setOpenSelector((currentSelector) =>
-        currentSelector === fieldName ? null : currentSelector
-      );
+      setOpenSelector(fieldName);
     },
     [setFieldError, setFieldTouched, setFieldValue, updateSearchValue]
   );
