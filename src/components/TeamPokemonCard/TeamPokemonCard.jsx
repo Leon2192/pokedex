@@ -15,7 +15,7 @@ import {
 } from './TeamPokemonCard.styled';
 
 const TeamPokemonCard = ({ detailPath, imageAlt, onRemove, pokemon, slotIndex }) => (
-  <Card data-team-slot={slotIndex}>
+  <Card data-team-slot={slotIndex} data-testid="team-card">
     <Header>
       <Slot>Espacio {slotIndex + 1}</Slot>
       <RemoveButton type="button" onClick={onRemove}>

@@ -84,7 +84,12 @@ const PokemonDetail = ({
         {pokemon ? <DataStatusBadge status={dataStatus} /> : null}
 
         {pokemon ? (
-          <ActionButton type="button" $isActive={isPokemonInTeam} onClick={onTeamToggle}>
+          <ActionButton
+            type="button"
+            $isActive={isPokemonInTeam}
+            data-testid="add-to-team-button"
+            onClick={onTeamToggle}
+          >
             {teamButtonLabel}
           </ActionButton>
         ) : null}
@@ -96,7 +101,7 @@ const PokemonDetail = ({
         <DetailGrid>
           <HeroPanel>
             <Subtitle>{pokemon.number}</Subtitle>
-            <Title>{pokemon.displayName}</Title>
+            <Title data-testid="pokemon-detail-title">{pokemon.displayName}</Title>
 
             <Types aria-label={`Tipos de ${pokemon.displayName}`}>
               {pokemon.types.map((type) => (

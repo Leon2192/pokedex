@@ -12,7 +12,11 @@ import {
 } from './PokemonCard.styled';
 
 const PokemonCard = ({ detailPath, imageAlt, pokemon }) => (
-  <Card to={detailPath} aria-label={`Ver detalle de ${pokemon.displayName}`}>
+  <Card
+    to={detailPath}
+    aria-label={`Ver detalle de ${pokemon.displayName}`}
+    data-testid="pokemon-card"
+  >
     <Header>
       <Number>{pokemon.number}</Number>
       <Title>{pokemon.displayName}</Title>

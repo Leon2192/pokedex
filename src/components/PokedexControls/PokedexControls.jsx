@@ -31,6 +31,7 @@ const PokedexControls = ({
       <Input
         id="search"
         name="search"
+        data-testid="pokemon-search-input"
         onBlur={handleBlur}
         onChange={handleSearchChange}
         placeholder="Nombre o numero"
