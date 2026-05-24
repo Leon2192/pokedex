@@ -15,6 +15,7 @@ El proyecto prioriza arquitectura escalable, separacion de responsabilidades, ca
 - Styled Components
 - Formik
 - Yup
+- Recharts
 - PokeAPI
 
 ## Instalacion
@@ -136,7 +137,7 @@ src/
 - `redux-persist` mantiene el equipo; el cache de RTK Query queda en memoria para evitar persistir datos remotos viejos innecesarios.
 - La app muestra estado online/offline y badges de datos frescos/cacheados.
 - Las notificaciones se centralizan con `useToast` y `components/Toast`.
-- No se agrego libreria de charts: las comparaciones usan barras visuales con Styled Components.
+- Se agrego Recharts para las visualizaciones de stats en detalle y comparacion: evita mantener graficos custom con CSS, mejora legibilidad y mantiene una solucion declarativa.
 
 ## Features implementadas
 
@@ -145,9 +146,9 @@ src/
 - Filtros combinables por tipo y generacion.
 - Query params en `/pokedex`.
 - Infinite scroll con skeletons y estado de fin de resultados.
-- Detalle en `/pokemon/:name` con imagen, sprites, variantes, tipos, habilidades, altura, peso y stats.
+- Detalle en `/pokemon/:name` con imagen, sprites, variantes, tipos, habilidades, altura, peso y grafico de stats.
 - Equipo en `/team` con maximo 6 Pokemon, persistencia, remove y estado vacio.
-- Comparador en `/compare` con Formik/Yup, selects searchables y stats lado a lado.
+- Comparador en `/compare` con Formik/Yup, selects searchables y grafico comparativo de stats.
 - Loading, error, retry y estados vacios en vistas principales.
 - Estado de conexion online/offline.
 - Indicadores de datos frescos, cacheados y cache sin conexion.
