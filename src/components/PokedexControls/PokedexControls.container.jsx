@@ -1,15 +1,9 @@
 import { useCallback, useMemo } from 'react';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { POKEDEX_FILTER_DEFAULTS } from '@/constants/filters';
+import { pokedexControlsSchema } from '@/schemas';
 import { getPokemonTypeLabel } from '@/utils/pokemon';
 import PokedexControls from './PokedexControls';
-
-const validationSchema = Yup.object({
-  search: Yup.string().max(40, 'Usa 40 caracteres o menos'),
-  type: Yup.string().required(),
-  generation: Yup.string().required(),
-});
 
 const PokedexControlsContainer = ({
   generationOptions,
@@ -22,7 +16,7 @@ const PokedexControlsContainer = ({
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
-    validationSchema,
+    validationSchema: pokedexControlsSchema,
     onSubmit: onFiltersChange,
   });
   const { errors, handleBlur, handleSubmit, setFieldValue, setValues, touched, values } = formik;
