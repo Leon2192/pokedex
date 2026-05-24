@@ -109,7 +109,10 @@ const CompareContainer = () => {
   const comparisonError = pokemonAQuery.error ?? pokemonBQuery.error;
   const isOptionsBlockingError = isOptionsError && rawPokemonOptions.length === 0;
   const isOptionsPending = isOptionsLoading && rawPokemonOptions.length === 0;
+  const isSelectorDisabled = isOptionsPending || isOptionsBlockingError;
   const isComparisonBlockingError = isComparisonError && !hasComparison;
+  const showEmptyComparison = !submittedPair && !isComparisonLoading;
+  const showComparisonResult = !isComparisonLoading && !isComparisonBlockingError && hasComparison;
   const comparisonFulfilledTimeStamp = useMemo(() => {
     const timestamps = [pokemonAQuery.fulfilledTimeStamp, pokemonBQuery.fulfilledTimeStamp].filter(
       Boolean
@@ -258,13 +261,13 @@ const CompareContainer = () => {
     <Compare
       comparisonError={comparisonError}
       comparisonRows={comparisonRows}
-      dataStatus={dataStatus}
+      displayStatus={dataStatus ?? optionsStatus}
       handleSubmit={handleSubmit}
-      hasComparison={hasComparison}
       isComparisonBlockingError={isComparisonBlockingError}
       isComparisonLoading={isComparisonLoading}
       isOptionsBlockingError={isOptionsBlockingError}
       isOptionsLoading={isOptionsPending}
+      isSelectorDisabled={isSelectorDisabled}
       isSubmitting={isSubmitting}
       onSelectorBlur={handleSelectorBlur}
       onSelectorClear={handleSelectorClear}
@@ -279,7 +282,8 @@ const CompareContainer = () => {
       pokemonA={pokemonA}
       pokemonBSelector={pokemonBSelector}
       pokemonB={pokemonB}
-      submittedPair={submittedPair}
+      showComparisonResult={showComparisonResult}
+      showEmptyComparison={showEmptyComparison}
     />
   );
 };

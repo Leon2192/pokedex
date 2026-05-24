@@ -165,13 +165,13 @@ const renderPokemonSelector = ({
 const Compare = ({
   comparisonError,
   comparisonRows,
-  dataStatus,
+  displayStatus,
   handleSubmit,
-  hasComparison,
   isComparisonBlockingError,
   isComparisonLoading,
   isOptionsBlockingError,
   isOptionsLoading,
+  isSelectorDisabled,
   isSubmitting,
   onSelectorBlur,
   onSelectorClear,
@@ -181,104 +181,100 @@ const Compare = ({
   onRetryComparison,
   onRetryOptions,
   optionsError,
-  optionsStatus,
   pokemonASelector,
   pokemonA,
   pokemonBSelector,
   pokemonB,
-  submittedPair,
-}) => {
-  const isSelectorDisabled = isOptionsLoading || isOptionsBlockingError;
+  showComparisonResult,
+  showEmptyComparison,
+}) => (
+  <Page>
+    <Header>
+      <div>
+        <Title>Comparar</Title>
+        <Intro>Elegi dos Pokemon y compara sus stats base lado a lado.</Intro>
+      </div>
+      <DataStatusBadge status={displayStatus} />
+    </Header>
 
-  return (
-    <Page>
-      <Header>
-        <div>
-          <Title>Comparar</Title>
-          <Intro>Elegi dos Pokemon y compara sus stats base lado a lado.</Intro>
-        </div>
-        <DataStatusBadge status={dataStatus ?? optionsStatus} />
-      </Header>
+    {isOptionsBlockingError ? <ErrorState error={optionsError} onRetry={onRetryOptions} /> : null}
 
-      {isOptionsBlockingError ? <ErrorState error={optionsError} onRetry={onRetryOptions} /> : null}
+    <Form onSubmit={handleSubmit} aria-busy={isOptionsLoading}>
+      {renderPokemonSelector({
+        isOptionsLoading,
+        isSelectorDisabled,
+        onSelectorBlur,
+        onSelectorClear,
+        onSelectorFocus,
+        onSelectorSearch,
+        onSelectorSelect,
+        selector: pokemonASelector,
+      })}
 
-      <Form onSubmit={handleSubmit} aria-busy={isOptionsLoading}>
-        {renderPokemonSelector({
-          isOptionsLoading,
-          isSelectorDisabled,
-          onSelectorBlur,
-          onSelectorClear,
-          onSelectorFocus,
-          onSelectorSearch,
-          onSelectorSelect,
-          selector: pokemonASelector,
-        })}
+      {renderPokemonSelector({
+        isOptionsLoading,
+        isSelectorDisabled,
+        onSelectorBlur,
+        onSelectorClear,
+        onSelectorFocus,
+        onSelectorSearch,
+        onSelectorSelect,
+        selector: pokemonBSelector,
+      })}
 
-        {renderPokemonSelector({
-          isOptionsLoading,
-          isSelectorDisabled,
-          onSelectorBlur,
-          onSelectorClear,
-          onSelectorFocus,
-          onSelectorSearch,
-          onSelectorSelect,
-          selector: pokemonBSelector,
-        })}
+      <CompareButton type="submit" disabled={isSelectorDisabled || isSubmitting}>
+        Comparar
+      </CompareButton>
+    </Form>
 
-        <CompareButton type="submit" disabled={isSelectorDisabled || isSubmitting}>
-          Comparar
-        </CompareButton>
-      </Form>
+    {showEmptyComparison ? (
+      <EmptyState>
+        <EmptyStateTitle>Todavia no hay comparacion</EmptyStateTitle>
+        <EmptyStateText>
+          Elegi dos Pokemon diferentes para comparar tipos e indicadores base.
+        </EmptyStateText>
+      </EmptyState>
+    ) : null}
 
-      {!submittedPair && !isComparisonLoading ? (
-        <EmptyState>
-          <EmptyStateTitle>Todavia no hay comparacion</EmptyStateTitle>
-          <EmptyStateText>
-            Elegi dos Pokemon diferentes para comparar tipos e indicadores base.
-          </EmptyStateText>
-        </EmptyState>
-      ) : null}
+    {isComparisonLoading ? renderSkeleton() : null}
 
-      {isComparisonLoading ? renderSkeleton() : null}
+    {isComparisonBlockingError ? (
+      <ErrorState error={comparisonError} onRetry={onRetryComparison} />
+    ) : null}
 
-      {isComparisonBlockingError ? (
-        <ErrorState error={comparisonError} onRetry={onRetryComparison} />
-      ) : null}
+    {showComparisonResult ? (
+      <>
+        <ComparisonGrid>
+          {renderPokemonPanel(pokemonA, 'Primer Pokemon')}
+          {renderPokemonPanel(pokemonB, 'Segundo Pokemon')}
+        </ComparisonGrid>
 
-      {!isComparisonLoading && !isComparisonBlockingError && hasComparison ? (
-        <>
-          <ComparisonGrid>
-            {renderPokemonPanel(pokemonA, 'Primer Pokemon')}
-            {renderPokemonPanel(pokemonB, 'Segundo Pokemon')}
-          </ComparisonGrid>
+        <StatsPanel>
+          {comparisonRows.map((row) => (
+            <StatRow key={row.name}>
+              <StatSide $side="left">
+                <StatPokemonLabel>{pokemonA.displayName}</StatPokemonLabel>
+                <StatValue $isWinner={row.winner === 'pokemonA'}>{row.pokemonA.value}</StatValue>
+                <StatBar>
+                  <StatFill $percentage={row.pokemonA.percentage} />
+                </StatBar>
+              </StatSide>
 
-          <StatsPanel>
-            {comparisonRows.map((row) => (
-              <StatRow key={row.name}>
-                <StatSide $side="left">
-                  <StatPokemonLabel>{pokemonA.displayName}</StatPokemonLabel>
-                  <StatValue $isWinner={row.winner === 'pokemonA'}>{row.pokemonA.value}</StatValue>
-                  <StatBar>
-                    <StatFill $percentage={row.pokemonA.percentage} />
-                  </StatBar>
-                </StatSide>
+              <StatName>{row.displayName}</StatName>
 
-                <StatName>{row.displayName}</StatName>
-
-                <StatSide $side="right">
-                  <StatPokemonLabel>{pokemonB.displayName}</StatPokemonLabel>
-                  <StatValue $isWinner={row.winner === 'pokemonB'}>{row.pokemonB.value}</StatValue>
-                  <StatBar>
-                    <StatFill $percentage={row.pokemonB.percentage} />
-                  </StatBar>
-                </StatSide>
-              </StatRow>
-            ))}
-          </StatsPanel>
-        </>
-      ) : null}
-    </Page>
-  );
-};
+              <StatSide $side="right">
+                <StatPokemonLabel>{pokemonB.displayName}</StatPokemonLabel>
+                <StatValue $isWinner={row.winner === 'pokemonB'}>{row.pokemonB.value}</StatValue>
+                <StatBar>
+                  <StatFill $percentage={row.pokemonB.percentage} />
+                </StatBar>
+              </StatSide>
+            </StatRow>
+          ))}
+        </StatsPanel>
+      </>
+    ) : null}
+  </Page>
+);
 
 export default React.memo(Compare);

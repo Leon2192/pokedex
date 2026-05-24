@@ -9,6 +9,7 @@ const TeamContainer = () => {
   const team = useSelector(selectTeam);
   const { showToast, toast } = useToast();
   const teamCount = team.length;
+  const hasTeam = teamCount > 0;
 
   const teamSlots = useMemo(
     () =>
@@ -31,6 +32,7 @@ const TeamContainer = () => {
   return (
     <Team
       maxTeamSize={MAX_TEAM_SIZE}
+      hasTeam={hasTeam}
       onRemovePokemon={handleRemovePokemon}
       teamCount={teamCount}
       teamSlots={teamSlots}

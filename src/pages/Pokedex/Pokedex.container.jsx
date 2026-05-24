@@ -17,6 +17,9 @@ import {
 } from '@/services/api/pokemonApi';
 import Pokedex from './Pokedex';
 
+const INITIAL_SKELETON_COUNT = 12;
+const FETCHING_MORE_SKELETON_COUNT = 4;
+
 const PokedexContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const isOnline = useNetworkStatus();
@@ -60,12 +63,23 @@ const PokedexContainer = () => {
     useGetPokemonGenerationsQuery();
 
   const pokemons = pokemonList?.results ?? [];
+  const hasPokemons = pokemons.length > 0;
   const hasNextPage = Boolean(pokemonList?.next) && pokemons.length < (pokemonList?.count ?? 0);
-  const isInitialLoading = (isLoading || isFetching) && pokemons.length === 0;
+  const isInitialLoading = (isLoading || isFetching) && !hasPokemons;
   const isSearchDebouncing = filters.search !== debouncedSearch;
   const isPaginationLocked = !isOnline || isError || isFetching || isSearchDebouncing;
   const canLoadMore = isOnline && !isError && hasNextPage;
-  const isFetchingMore = isFetching && pokemons.length > 0;
+  const isFetchingMore = isFetching && hasPokemons;
+  const showOfflineEmptyState = !isOnline && !hasPokemons && !isInitialLoading;
+  const showOfflineCacheState = !isOnline && hasPokemons;
+  const showBlockingError = isOnline && isError && !hasPokemons;
+  const showInitialSkeletons = !showBlockingError && isInitialLoading;
+  const showPokemonGrid = !showBlockingError && !isInitialLoading && hasPokemons;
+  const showEmptyResults =
+    !showOfflineEmptyState && !showBlockingError && !isInitialLoading && !hasPokemons;
+  const showFetchingMoreSkeletons = !showBlockingError && isOnline && isFetchingMore;
+  const showEndState =
+    !showBlockingError && isOnline && !isInitialLoading && !hasNextPage && hasPokemons;
   const dataStatus = useMemo(
     () =>
       getQueryDataStatus({
@@ -121,12 +135,10 @@ const PokedexContainer = () => {
       dataStatus={dataStatus}
       error={error}
       filters={filters}
+      fetchingSkeletonCount={FETCHING_MORE_SKELETON_COUNT}
       generationOptions={generationOptions}
-      hasNextPage={hasNextPage}
-      isError={isError}
-      isFetchingMore={isFetchingMore}
+      initialSkeletonCount={INITIAL_SKELETON_COUNT}
       isGenerationsLoading={isGenerationsLoading}
-      isInitialLoading={isInitialLoading}
       isOnline={isOnline}
       isTypesLoading={isTypesLoading}
       onClearFilters={handleClearFilters}
@@ -134,6 +146,14 @@ const PokedexContainer = () => {
       onRetry={handleRetry}
       pokemons={pokemons}
       lastPokemonRef={lastPokemonRef}
+      showBlockingError={showBlockingError}
+      showEmptyResults={showEmptyResults}
+      showEndState={showEndState}
+      showFetchingMoreSkeletons={showFetchingMoreSkeletons}
+      showInitialSkeletons={showInitialSkeletons}
+      showOfflineCacheState={showOfflineCacheState}
+      showOfflineEmptyState={showOfflineEmptyState}
+      showPokemonGrid={showPokemonGrid}
       totalCount={pokemonList?.count ?? 0}
       totalLoaded={pokemons.length}
       typeOptions={typeOptions}
