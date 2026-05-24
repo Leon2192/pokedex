@@ -124,7 +124,7 @@ Se usa para separar logica de render. Los containers concentran hooks, handlers,
 
 **RTK Query + Axios**
 
-Todas las llamadas a PokeAPI pasan por `pokemonApi`. Se usa RTK Query para manejar server state, cache, loading, error, refetch y metadata. No se usa `fetchBaseQuery`: el challenge pedia Axios, por eso se implemento `axiosBaseQuery`, que delega en `axiosInstance`. `axiosInstance` centraliza `baseURL`, timeout, headers, interceptors y normalizacion de errores.
+Todas las llamadas a PokeAPI pasan por `pokemonApi`. Se usa RTK Query para manejar server state, cache, loading, error, refetch y metadata. Se implemento `axiosBaseQuery`, que delega en `axiosInstance`. `axiosInstance` centraliza `baseURL`, timeout, headers, interceptors y normalizacion de errores.
 
 **Cache**
 
