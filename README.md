@@ -1,6 +1,6 @@
 # Pokedex Challenge
 
-El proyecto prioriza arquitectura escalable, separacion de responsabilidades, cache con RTK Query, persistencia local del equipo y una UX completa para listado, detalle, equipo y comparacion.
+El proyecto prioriza separacion de responsabilidades, arquitectura escalable, cache con RTK Query, persistencia local y una UX completa para listado, detalle, equipo y comparacion.
 
 ## Stack
 
@@ -18,19 +18,25 @@ El proyecto prioriza arquitectura escalable, separacion de responsabilidades, ca
 - Recharts
 - PokeAPI
 
-## Instalacion
+## Instalacion y ejecucion
 
 ```bash
 npm install
 ```
 
-Crear el archivo local de entorno:
+Crear variables de entorno de la aplicacion:
 
 ```bash
 cp .env.sample .env
 ```
 
-En Windows PowerShell tambien se puede crear manualmente copiando el contenido de `.env.sample`.
+Crear variables de entorno para E2E:
+
+```bash
+cp .env.testing.sample .env.testing
+```
+
+En Windows PowerShell tambien se pueden crear manualmente copiando el contenido de los archivos `.sample`.
 
 ## Variables de entorno
 
@@ -40,40 +46,23 @@ VITE_API_BASE_URL=https://pokeapi.co/api/v2
 
 No se usan secretos, tokens ni variables sensibles.
 
-## Testing Environment Variables
+Los tests E2E usan variables separadas de las variables del frontend para evitar acoplamiento accidental con entornos reales:
 
-Los tests E2E usan variables separadas de las variables del frontend para evitar acoplamiento accidental con entornos reales.
-
-Crear el archivo local:
-
-```bash
-cp .env.testing.sample .env.testing
-```
-
-Variables disponibles:
-
-```bash
-PLAYWRIGHT_BASE_URL=http://127.0.0.1:5173
-TEST_API_BASE_URL=https://pokeapi.co/api/v2
-```
-
-- `PLAYWRIGHT_BASE_URL`: URL local donde Playwright levanta o reutiliza la app para correr los tests.
-- `TEST_API_BASE_URL`: URL base usada solo por mocks/helpers de testing para interceptar requests.
+- `PLAYWRIGHT_BASE_URL`: URL donde Playwright levanta o reutiliza la app.
+- `TEST_API_BASE_URL`: URL base usada solo por mocks/helpers de testing.
 
 `.env.testing` no se usa por Vite ni por la app en runtime. Si falta, Playwright mantiene fallbacks locales seguros.
 
 ## Comandos
 
-```bash
-npm run dev
-npm run build
-npm run preview
-npm run format
-npm run format:check
-npm run test:e2e
-npm run test:e2e:ui
-npm run test:e2e:headed
-```
+- `npm run dev`: levanta Vite en modo desarrollo.
+- `npm run build`: genera el build de produccion.
+- `npm run preview`: sirve localmente el build generado.
+- `npm run format`: aplica Prettier a todo el proyecto.
+- `npm run format:check`: valida formato sin modificar archivos.
+- `npm run test:e2e`: corre la suite E2E con Playwright.
+- `npm run test:e2e:ui`: abre el runner visual de Playwright.
+- `npm run test:e2e:headed`: corre los tests con navegador visible.
 
 ## Arquitectura
 
@@ -129,16 +118,37 @@ src/
 
 ## Decisiones tecnicas
 
-- `axiosInstance` centraliza `baseURL`, timeout, headers, interceptors y errores.
-- `pokemonApi` define endpoints para listado, detalle, opciones, tipos y generaciones.
-- El listado se enriquece fuera de la UI para mostrar sprite, numero y tipos.
-- Busqueda y filtros se guardan en query params para soportar refresh y links compartibles.
-- Infinite scroll usa `IntersectionObserver` sobre el ultimo item visible y bloqueos para evitar requests duplicados.
-- `redux-persist` mantiene el equipo y el cache cumplido de RTK Query para que los datos sobrevivan al refresh y la app pueda mostrar informacion disponible sin conexion.
-- El cache rehidratado de RTK Query se marca como cacheado: el tradeoff es que los datos remotos pueden quedar temporalmente viejos, mitigado con badges de datos frescos/cacheados y refetch al volver online.
-- La app muestra estado online/offline y badges de datos frescos/cacheados.
-- Las notificaciones se centralizan con `useToast` y `components/Toast`.
-- Se agrego Recharts para las visualizaciones de stats en detalle y comparacion: evita mantener graficos custom con CSS, mejora legibilidad y mantiene una solucion declarativa.
+**Container / Presentational**
+
+Se usa para separar logica de render. Los containers concentran hooks, handlers, selectors, navegacion y datos derivados; los presentacionales reciben props listas y renderizan UI. Esto hace que las vistas sean mas simples de leer y evita mezclar reglas de negocio con JSX.
+
+**RTK Query + Axios**
+
+Todas las llamadas a PokeAPI pasan por `pokemonApi`. Se usa RTK Query para manejar server state, cache, loading, error, refetch y metadata. No se usa `fetchBaseQuery`: el challenge pedia Axios, por eso se implemento `axiosBaseQuery`, que delega en `axiosInstance`. `axiosInstance` centraliza `baseURL`, timeout, headers, interceptors y normalizacion de errores.
+
+**Cache**
+
+RTK Query evita requests redundantes y mantiene datos disponibles entre navegaciones. `keepUnusedDataFor` esta configurado para conservar cache durante un tiempo razonable cuando una pantalla se desmonta. La app usa metadata de RTK Query para mostrar indicadores de datos frescos, cacheados, actualizando cache o cache sin conexion.
+
+**Persistencia**
+
+`redux-persist` guarda el equipo y el cache cumplido de RTK Query. Esto permite que los datos sobrevivan al refresh y mejora el soporte offline. El cache rehidratado se marca como cacheado para no presentarlo como dato fresco. El tradeoff es que datos remotos podrian quedar temporalmente viejos; se mitiga con badges de frescura/cache, refetch al volver online y retry manual donde corresponde.
+
+**Listado e infinite scroll**
+
+El endpoint `/pokemon` devuelve solo `name` y `url`, por eso el listado se enriquece fuera de la UI para obtener sprite, numero y tipos. El infinite scroll usa `IntersectionObserver` sobre el ultimo item visible y bloqueos por loading, error, fin de resultados y estado offline para evitar requests duplicadas o loops sin conexion.
+
+**Formularios**
+
+Compare usa Formik para estado del formulario y Yup para validacion. Los schemas viven en `src/schemas` para mantener containers mas legibles y evitar validaciones inline.
+
+**Graficos**
+
+Se agrego Recharts para visualizar stats en detalle y comparacion. Es una opcion declarativa, responsive y simple para el challenge; evita mantener graficos custom con CSS y mantiene consistencia visual.
+
+**Deploy SPA**
+
+`vercel.json` configura rewrites a `/` para que React Router pueda resolver rutas internas al refrescar en Vercel.
 
 ## Features implementadas
 
@@ -161,6 +171,8 @@ La configuracion E2E usa Playwright con una suite pequena y orientada a flujos c
 - Pokedex principal: carga inicial, cards visibles y busqueda por nombre.
 - Detalle Pokemon: navegacion desde una card, informacion principal y vuelta al listado.
 - Equipo: agregar un Pokemon, verlo en `/team` y validar persistencia despues de refrescar.
+- Offline/cache: estado online/offline, cache disponible, pausa del infinite scroll sin conexion y rehidratacion del cache de RTK Query.
+- Compare: render del grafico al comparar dos Pokemon.
 
 Los tests mockean las respuestas minimas de PokeAPI para evitar dependencia de red externa y mantener ejecuciones rapidas y estables. No se busca cubrir toda la app: la suite funciona como smoke test de alto valor para demostrar que los flujos principales siguen sanos.
 
@@ -192,7 +204,13 @@ Si Playwright no encuentra browsers instalados en la maquina:
 npx playwright install
 ```
 
-## Calidad y limites actuales
+## Mejoras futuras identificadas
+
+- Mayor cobertura E2E: agregar mas casos de filtros combinados, limite de equipo y validaciones del comparador. No se amplio ahora para mantener una suite chica y rapida.
+- Tests unitarios selectivos: cubrir helpers de filtros, mappers y reducers. Se priorizo E2E porque demuestran flujos reales del challenge.
+- Drag and drop avanzado: reemplazar HTML5 drag and drop por una solucion mas completa (si se necesitara mejor soporte tactil por ejemplo).
+
+## Calidad y validacion
 
 - `npm run build` valida la compilacion de produccion.
 - `npm run test:e2e` valida flujos criticos con Playwright.
