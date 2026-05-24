@@ -14,8 +14,39 @@ import {
   Types,
 } from './TeamPokemonCard.styled';
 
-const TeamPokemonCard = ({ detailPath, imageAlt, onRemove, pokemon, slotIndex }) => (
-  <Card data-team-slot={slotIndex} data-testid="team-card">
+const TeamPokemonCard = ({
+  detailPath,
+  imageAlt,
+  isDragging,
+  isDragOver,
+  onDragEnd,
+  onDragEnter,
+  onDragStart,
+  onDrop,
+  onRemove,
+  pokemon,
+  slotIndex,
+}) => (
+  <Card
+    draggable
+    aria-label={`Reordenar ${pokemon.displayName} en el equipo`}
+    data-team-slot={slotIndex}
+    data-testid="team-card"
+    $isDragging={isDragging}
+    $isDragOver={isDragOver}
+    onDragEnd={onDragEnd}
+    onDragEnter={() => onDragEnter(slotIndex)}
+    onDragOver={(event) => event.preventDefault()}
+    onDragStart={(event) => {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', String(slotIndex));
+      onDragStart(slotIndex);
+    }}
+    onDrop={(event) => {
+      event.preventDefault();
+      onDrop(slotIndex);
+    }}
+  >
     <Header>
       <Slot>Espacio {slotIndex + 1}</Slot>
       <RemoveButton type="button" onClick={onRemove}>

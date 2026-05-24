@@ -27,13 +27,32 @@ const teamSlice = createSlice({
         (pokemon) => pokemon.id !== pokemonIdOrName && pokemon.name !== pokemonIdOrName
       );
     },
+    reorderTeam(state, action) {
+      const { fromIndex, toIndex } = action.payload;
+      const isValidMove =
+        Number.isInteger(fromIndex) &&
+        Number.isInteger(toIndex) &&
+        fromIndex >= 0 &&
+        toIndex >= 0 &&
+        fromIndex < state.pokemons.length &&
+        toIndex < state.pokemons.length &&
+        fromIndex !== toIndex;
+
+      if (!isValidMove) {
+        return;
+      }
+
+      const [pokemon] = state.pokemons.splice(fromIndex, 1);
+
+      state.pokemons.splice(toIndex, 0, pokemon);
+    },
     clearTeam(state) {
       state.pokemons = [];
     },
   },
 });
 
-export const { addPokemon, removePokemon, clearTeam } = teamSlice.actions;
+export const { addPokemon, removePokemon, reorderTeam, clearTeam } = teamSlice.actions;
 
 export const selectTeam = (state) => state.team.pokemons;
 

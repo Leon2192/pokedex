@@ -17,7 +17,20 @@ import {
   Title,
 } from './Team.styled';
 
-const Team = ({ hasTeam, maxTeamSize, onRemovePokemon, teamCount, teamSlots, toast }) => (
+const Team = ({
+  draggingSlotIndex,
+  dragOverSlotIndex,
+  hasTeam,
+  maxTeamSize,
+  onDragEnd,
+  onDragEnter,
+  onDragStart,
+  onDrop,
+  onRemovePokemon,
+  teamCount,
+  teamSlots,
+  toast,
+}) => (
   <Page>
     <Header>
       <div>
@@ -46,7 +59,15 @@ const Team = ({ hasTeam, maxTeamSize, onRemovePokemon, teamCount, teamSlots, toa
           slot.pokemon ? (
             <TeamPokemonCard
               key={slot.id}
+              isDragging={draggingSlotIndex === slot.slotIndex}
+              isDragOver={
+                dragOverSlotIndex === slot.slotIndex && draggingSlotIndex !== slot.slotIndex
+              }
               onRemove={onRemovePokemon}
+              onDragEnd={onDragEnd}
+              onDragEnter={onDragEnter}
+              onDragStart={onDragStart}
+              onDrop={onDrop}
               pokemon={slot.pokemon}
               slotIndex={slot.slotIndex}
             />

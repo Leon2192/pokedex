@@ -12,6 +12,22 @@ export const Card = styled.article`
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surface};
   box-shadow: ${({ theme }) => theme.shadow.card};
+  cursor: ${({ $isDragging }) => ($isDragging ? 'grabbing' : 'grab')};
+  opacity: ${({ $isDragging }) => ($isDragging ? 0.58 : 1)};
+  outline: ${({ $isDragOver }) => ($isDragOver ? '3px solid rgba(37, 99, 235, 0.26)' : 'none')};
+  outline-offset: 3px;
+  transition:
+    border-color 160ms ease,
+    opacity 160ms ease,
+    outline-color 160ms ease,
+    transform 160ms ease;
+
+  ${({ $isDragOver }) => ($isDragOver ? 'transform: translateY(-2px);' : '')}
+
+  &:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.28);
+    outline-offset: 3px;
+  }
 `;
 
 export const Header = styled.div`

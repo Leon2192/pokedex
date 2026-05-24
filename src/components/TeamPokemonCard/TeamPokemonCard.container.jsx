@@ -2,7 +2,17 @@ import { useCallback } from 'react';
 import { buildPokemonDetailPath } from '@/routes';
 import TeamPokemonCard from './TeamPokemonCard';
 
-const TeamPokemonCardContainer = ({ onRemove, pokemon, slotIndex }) => {
+const TeamPokemonCardContainer = ({
+  isDragging,
+  isDragOver,
+  onDragEnd,
+  onDragEnter,
+  onDragStart,
+  onDrop,
+  onRemove,
+  pokemon,
+  slotIndex,
+}) => {
   const detailPath = buildPokemonDetailPath(pokemon.name);
   const imageAlt = `Sprite de ${pokemon.displayName} en el equipo`;
 
@@ -14,6 +24,12 @@ const TeamPokemonCardContainer = ({ onRemove, pokemon, slotIndex }) => {
     <TeamPokemonCard
       detailPath={detailPath}
       imageAlt={imageAlt}
+      isDragging={isDragging}
+      isDragOver={isDragOver}
+      onDragEnd={onDragEnd}
+      onDragEnter={onDragEnter}
+      onDragStart={onDragStart}
+      onDrop={onDrop}
       onRemove={handleRemove}
       pokemon={pokemon}
       slotIndex={slotIndex}
