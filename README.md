@@ -1,6 +1,6 @@
 # Pokedex Challenge
 
-El proyecto prioriza arquitectura escalable, separacion de responsabilidades, cache en memoria con RTK Query, persistencia local del equipo y una UX completa para listado, detalle, equipo y comparacion.
+El proyecto prioriza arquitectura escalable, separacion de responsabilidades, cache con RTK Query, persistencia local del equipo y una UX completa para listado, detalle, equipo y comparacion.
 
 ## Stack
 
@@ -134,7 +134,8 @@ src/
 - El listado se enriquece fuera de la UI para mostrar sprite, numero y tipos.
 - Busqueda y filtros se guardan en query params para soportar refresh y links compartibles.
 - Infinite scroll usa `IntersectionObserver` sobre el ultimo item visible y bloqueos para evitar requests duplicados.
-- `redux-persist` mantiene el equipo; el cache de RTK Query queda en memoria para evitar persistir datos remotos viejos innecesarios.
+- `redux-persist` mantiene el equipo y el cache cumplido de RTK Query para que los datos sobrevivan al refresh y la app pueda mostrar informacion disponible sin conexion.
+- El cache rehidratado de RTK Query se marca como cacheado: el tradeoff es que los datos remotos pueden quedar temporalmente viejos, mitigado con badges de datos frescos/cacheados y refetch al volver online.
 - La app muestra estado online/offline y badges de datos frescos/cacheados.
 - Las notificaciones se centralizan con `useToast` y `components/Toast`.
 - Se agrego Recharts para las visualizaciones de stats en detalle y comparacion: evita mantener graficos custom con CSS, mejora legibilidad y mantiene una solucion declarativa.

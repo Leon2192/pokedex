@@ -68,6 +68,21 @@ test('muestra datos cacheados al navegar offline si ya estaban cargados', async 
   ).toBeVisible();
 });
 
+test('rehidrata el cache de RTK Query despues de refrescar', async ({ page }) => {
+  await mockPokemonApi(page);
+  await page.goto('/pokedex');
+
+  await expect(page.getByTestId('pokemon-card')).toHaveCount(4);
+  await page.waitForFunction(() =>
+    localStorage.getItem('persist:pokedex-root')?.includes('pokemonApi')
+  );
+
+  await page.reload();
+
+  await expect(page.getByTestId('pokemon-card')).toHaveCount(4);
+  await expect(page.getByText('Datos cacheados')).toBeVisible();
+});
+
 test('offline sin cache muestra estado controlado y recupera al volver online', async ({
   context,
   page,

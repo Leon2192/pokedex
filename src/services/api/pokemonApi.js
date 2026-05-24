@@ -1,4 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+import { REHYDRATE } from 'redux-persist';
 import { API_ENDPOINTS, POKEMON_PAGE_SIZE } from '@/constants/api';
 import { ALL_FILTER_VALUE } from '@/constants/filters';
 import { hasActivePokedexFilters, normalizePokedexFilters } from '@/helpers/pokedexFilters';
@@ -161,6 +162,13 @@ const getPokemonDetailsPage = async (resources, baseQuery) => {
 export const pokemonApi = createApi({
   reducerPath: 'pokemonApi',
   baseQuery: axiosBaseQuery(),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === REHYDRATE) {
+      return action.payload?.[reducerPath];
+    }
+
+    return undefined;
+  },
   refetchOnReconnect: true,
   tagTypes: [
     'Pokemon',
