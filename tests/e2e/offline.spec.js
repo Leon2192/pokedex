@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { mockPokemonApi } from './mocks/pokemon';
+import { mockPokemonApi, TEST_API_BASE_URL, TEST_API_ROUTE } from './mocks/pokemon';
 
 test('el header refleja estado online y offline', async ({ context, page }) => {
   await mockPokemonApi(page);
@@ -22,7 +22,7 @@ test('offline pausa el infinite scroll y evita requests fallidas en loop', async
 
   const failedPokemonRequests = [];
   page.on('requestfailed', (request) => {
-    if (request.url().startsWith('https://pokeapi.co/api/v2/')) {
+    if (request.url().startsWith(`${TEST_API_BASE_URL}/`)) {
       failedPokemonRequests.push(request.url());
     }
   });
@@ -77,13 +77,13 @@ test('offline sin cache muestra estado controlado y recupera al volver online', 
   await expect(page.getByTestId('pokemon-card')).toHaveCount(4);
 
   await context.setOffline(true);
-  await page.route('https://pokeapi.co/api/v2/**', (route) => route.abort('internetdisconnected'));
+  await page.route(TEST_API_ROUTE, (route) => route.abort('internetdisconnected'));
   await page.getByTestId('pokemon-search-input').fill('pika');
 
   await expect(page.getByRole('heading', { name: 'No hay conexion' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Reintentar' })).toBeDisabled();
 
-  await page.unroute('https://pokeapi.co/api/v2/**');
+  await page.unroute(TEST_API_ROUTE);
   await mockPokemonApi(page);
   await context.setOffline(false);
 

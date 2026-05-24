@@ -1,6 +1,11 @@
 const SPRITE =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="96" height="96"%3E%3Crect width="96" height="96" fill="%23f2f5f9"/%3E%3Ccircle cx="48" cy="48" r="28" fill="%23ef5350"/%3E%3C/svg%3E';
 
+export const TEST_API_BASE_URL = process.env.TEST_API_BASE_URL.trim().replace(/\/$/, '');
+export const TEST_API_ROUTE = `${TEST_API_BASE_URL}/**`;
+
+const TEST_API_PATH_PREFIX = new URL(TEST_API_BASE_URL).pathname.replace(/\/$/, '');
+
 const pokemonNames = ['bulbasaur', 'charmander', 'squirtle', 'pikachu'];
 
 const pokemonByName = {
@@ -53,7 +58,7 @@ const pokemonByName = {
 function namedResource(name, resource, id) {
   return {
     name,
-    url: `https://pokeapi.co/api/v2/${resource}/${id}/`,
+    url: `${TEST_API_BASE_URL}/${resource}/${id}/`,
   };
 }
 
@@ -130,11 +135,11 @@ function buildPokemonList(url, names) {
     count: names.length,
     next:
       nextOffset < names.length
-        ? `https://pokeapi.co/api/v2/pokemon?offset=${nextOffset}&limit=${limit}`
+        ? `${TEST_API_BASE_URL}/pokemon?offset=${nextOffset}&limit=${limit}`
         : null,
     previous:
       offset > 0
-        ? `https://pokeapi.co/api/v2/pokemon?offset=${Math.max(offset - limit, 0)}&limit=${limit}`
+        ? `${TEST_API_BASE_URL}/pokemon?offset=${Math.max(offset - limit, 0)}&limit=${limit}`
         : null,
     results: pageNames.map((name) => {
       const pokemon = getPokemon(name);
@@ -162,9 +167,9 @@ function buildSpecies(name) {
 export async function mockPokemonApi(page, { pokemonCount = pokemonNames.length } = {}) {
   const names = buildPokemonNames(pokemonCount);
 
-  await page.route('https://pokeapi.co/api/v2/**', async (route) => {
+  await page.route(TEST_API_ROUTE, async (route) => {
     const url = new URL(route.request().url());
-    const path = url.pathname.replace('/api/v2', '').replace(/\/$/, '');
+    const path = url.pathname.replace(TEST_API_PATH_PREFIX, '').replace(/\/$/, '');
     let body;
 
     if (path === '/pokemon') {

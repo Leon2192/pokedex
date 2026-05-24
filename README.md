@@ -35,12 +35,31 @@ En Windows PowerShell tambien se puede crear manualmente copiando el contenido d
 
 ```bash
 VITE_API_BASE_URL=https://pokeapi.co/api/v2
-VITE_APP_URL=http://localhost:5173
 ```
 
 No se usan secretos, tokens ni variables sensibles.
 
-`VITE_APP_URL` se usa para Playwright. Define la URL donde se levanta la app durante los tests E2E y permite cambiar host o puerto sin tocar `playwright.config.js`. Si no esta definida, Playwright usa `http://127.0.0.1:5173` como fallback.
+## Testing Environment Variables
+
+Los tests E2E usan variables separadas de las variables del frontend para evitar acoplamiento accidental con entornos reales.
+
+Crear el archivo local:
+
+```bash
+cp .env.testing.sample .env.testing
+```
+
+Variables disponibles:
+
+```bash
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:5173
+TEST_API_BASE_URL=https://pokeapi.co/api/v2
+```
+
+- `PLAYWRIGHT_BASE_URL`: URL local donde Playwright levanta o reutiliza la app para correr los tests.
+- `TEST_API_BASE_URL`: URL base usada solo por mocks/helpers de testing para interceptar requests.
+
+`.env.testing` no se usa por Vite ni por la app en runtime. Si falta, Playwright mantiene fallbacks locales seguros.
 
 ## Comandos
 
@@ -143,10 +162,10 @@ La configuracion E2E usa Playwright con una suite pequena y orientada a flujos c
 
 Los tests mockean las respuestas minimas de PokeAPI para evitar dependencia de red externa y mantener ejecuciones rapidas y estables. No se busca cubrir toda la app: la suite funciona como smoke test de alto valor para demostrar que los flujos principales siguen sanos.
 
-Playwright toma la URL base desde `VITE_APP_URL`. Para correr contra otro puerto o entorno local:
+Playwright toma la URL base desde `PLAYWRIGHT_BASE_URL`. Para correr contra otro puerto o entorno local, modificar `.env.testing`:
 
 ```bash
-VITE_APP_URL=http://127.0.0.1:5174 npm run test:e2e
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:5174
 ```
 
 ```bash
