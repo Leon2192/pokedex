@@ -1,6 +1,7 @@
 import React from 'react';
 import DataStatusBadge from '@/components/DataStatusBadge';
 import ErrorState from '@/components/ErrorState';
+import PokemonStatsChart from '@/components/PokemonStatsChart';
 import Toast from '@/components/Toast';
 import {
   AbilityBadge,
@@ -25,13 +26,6 @@ import {
   SpriteImage,
   SpriteLabel,
   SpritesGrid,
-  StatBar,
-  StatFill,
-  StatHeader,
-  StatItem,
-  StatName,
-  StatsList,
-  StatValue,
   Subtitle,
   Title,
   TypeBadge,
@@ -140,19 +134,7 @@ const PokemonDetail = ({
 
             <Panel>
               <PanelTitle>Estadisticas</PanelTitle>
-              <StatsList>
-                {pokemon.stats.map((stat) => (
-                  <StatItem key={stat.name}>
-                    <StatHeader>
-                      <StatName>{stat.displayName}</StatName>
-                      <StatValue>{stat.value}</StatValue>
-                    </StatHeader>
-                    <StatBar aria-hidden="true">
-                      <StatFill $percentage={stat.percentage} />
-                    </StatBar>
-                  </StatItem>
-                ))}
-              </StatsList>
+              <PokemonStatsChart stats={pokemon.stats} />
             </Panel>
           </MainPanel>
 

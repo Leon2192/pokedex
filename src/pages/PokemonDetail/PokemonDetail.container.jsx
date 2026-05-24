@@ -13,8 +13,6 @@ import { addPokemon, MAX_TEAM_SIZE, removePokemon, selectTeam } from '@/store/sl
 import { formatPokemonHeight, formatPokemonWeight } from '@/utils/formatters';
 import PokemonDetail from './PokemonDetail';
 
-const STAT_MAX_VALUE = 255;
-
 const PokemonDetailContainer = () => {
   const { name } = useParams();
   const navigate = useNavigate();
@@ -59,10 +57,6 @@ const PokemonDetailContainer = () => {
       variants: (species?.variants ?? pokemon.variants).map((variant) => ({
         ...variant,
         isCurrent: variant.name === pokemon.name,
-      })),
-      stats: pokemon.stats.map((stat) => ({
-        ...stat,
-        percentage: Math.min(100, Math.round((stat.value / STAT_MAX_VALUE) * 100)),
       })),
     };
   }, [pokemon, species]);

@@ -1,6 +1,7 @@
 import React from 'react';
 import DataStatusBadge from '@/components/DataStatusBadge';
 import ErrorState from '@/components/ErrorState';
+import PokemonComparisonChart from '@/components/PokemonComparisonChart';
 import {
   CompareButton,
   ComparisonGrid,
@@ -33,14 +34,6 @@ import {
   SelectorMessage,
   SkeletonBlock,
   SkeletonGrid,
-  StatBar,
-  StatFill,
-  StatPokemonLabel,
-  StatName,
-  StatRow,
-  StatSide,
-  StatValue,
-  StatsPanel,
   Title,
   TypeBadge,
   Types,
@@ -183,8 +176,10 @@ const Compare = ({
   optionsError,
   pokemonASelector,
   pokemonA,
+  pokemonAChartName,
   pokemonBSelector,
   pokemonB,
+  pokemonBChartName,
   showComparisonResult,
   showEmptyComparison,
 }) => (
@@ -249,29 +244,11 @@ const Compare = ({
           {renderPokemonPanel(pokemonB, 'Segundo Pokemon')}
         </ComparisonGrid>
 
-        <StatsPanel>
-          {comparisonRows.map((row) => (
-            <StatRow key={row.name}>
-              <StatSide $side="left">
-                <StatPokemonLabel>{pokemonA.displayName}</StatPokemonLabel>
-                <StatValue $isWinner={row.winner === 'pokemonA'}>{row.pokemonA.value}</StatValue>
-                <StatBar>
-                  <StatFill $percentage={row.pokemonA.percentage} />
-                </StatBar>
-              </StatSide>
-
-              <StatName>{row.displayName}</StatName>
-
-              <StatSide $side="right">
-                <StatPokemonLabel>{pokemonB.displayName}</StatPokemonLabel>
-                <StatValue $isWinner={row.winner === 'pokemonB'}>{row.pokemonB.value}</StatValue>
-                <StatBar>
-                  <StatFill $percentage={row.pokemonB.percentage} />
-                </StatBar>
-              </StatSide>
-            </StatRow>
-          ))}
-        </StatsPanel>
+        <PokemonComparisonChart
+          comparisonRows={comparisonRows}
+          pokemonAName={pokemonAChartName}
+          pokemonBName={pokemonBChartName}
+        />
       </>
     ) : null}
   </Page>

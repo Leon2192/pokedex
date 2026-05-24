@@ -280,8 +280,10 @@ const CompareContainer = () => {
       optionsStatus={optionsStatus}
       pokemonASelector={pokemonASelector}
       pokemonA={pokemonA}
+      pokemonAChartName={pokemonA?.displayName ?? ''}
       pokemonBSelector={pokemonBSelector}
       pokemonB={pokemonB}
+      pokemonBChartName={pokemonB?.displayName ?? ''}
       showComparisonResult={showComparisonResult}
       showEmptyComparison={showEmptyComparison}
     />

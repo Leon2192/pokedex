@@ -2,6 +2,14 @@ import { POKEMON_SPRITE_BASE_URL } from '@/constants/api';
 import { formatPokemonName, formatPokemonNumber } from '@/utils/formatters';
 
 const STAT_MAX_VALUE = 255;
+const CHART_STAT_LABELS = {
+  hp: 'PS',
+  attack: 'ATQ',
+  defense: 'DEF',
+  'special-attack': 'ATQ ESP',
+  'special-defense': 'DEF ESP',
+  speed: 'VEL',
+};
 
 const normalizePokemonName = (value = '') => value.trim().toLowerCase();
 
@@ -52,3 +60,11 @@ export const buildComparisonRows = (pokemonA, pokemonB) => {
     };
   });
 };
+
+export const buildComparisonChartData = (comparisonRows) =>
+  comparisonRows.map((row) => ({
+    stat: CHART_STAT_LABELS[row.name] ?? row.displayName,
+    fullStatName: row.displayName,
+    pokemonA: row.pokemonA.value,
+    pokemonB: row.pokemonB.value,
+  }));

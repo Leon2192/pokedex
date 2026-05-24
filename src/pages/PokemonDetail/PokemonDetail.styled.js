@@ -220,49 +220,6 @@ export const VariantBadge = styled(Link)`
   }
 `;
 
-export const StatsList = styled.div`
-  display: grid;
-  gap: 12px;
-`;
-
-export const StatItem = styled.div`
-  display: grid;
-  gap: 7px;
-`;
-
-export const StatHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-`;
-
-export const StatName = styled.span`
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.86rem;
-  font-weight: 900;
-`;
-
-export const StatValue = styled.strong`
-  font-size: 0.9rem;
-`;
-
-export const StatBar = styled.div`
-  width: 100%;
-  height: 10px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: ${({ theme }) => theme.colors.surfaceMuted};
-`;
-
-export const StatFill = styled.span`
-  width: ${({ $percentage }) => `${$percentage}%`};
-  height: 100%;
-  display: block;
-  border-radius: inherit;
-  background: ${({ theme }) => theme.colors.secondary};
-`;
-
 export const SpritesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
