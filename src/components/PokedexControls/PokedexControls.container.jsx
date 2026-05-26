@@ -19,7 +19,11 @@ const PokedexControlsContainer = ({
     validationSchema: pokedexControlsSchema,
     onSubmit: onFiltersChange,
   });
-  const { errors, handleBlur, handleSubmit, setFieldValue, setValues, touched, values } = formik;
+  const { errors, handleBlur, setFieldValue, setValues, touched, values } = formik;
+  const hasActiveFilters =
+    values.search.trim() !== POKEDEX_FILTER_DEFAULTS.search ||
+    values.type !== POKEDEX_FILTER_DEFAULTS.type ||
+    values.generation !== POKEDEX_FILTER_DEFAULTS.generation;
 
   const mappedTypeOptions = useMemo(
     () =>
@@ -93,8 +97,8 @@ const PokedexControlsContainer = ({
       handleGenerationChange={handleGenerationChange}
       handleReset={handleReset}
       handleSearchChange={handleSearchChange}
-      handleSubmit={handleSubmit}
       handleTypeChange={handleTypeChange}
+      hasActiveFilters={hasActiveFilters}
       isGenerationsLoading={isGenerationsLoading}
       isTypesLoading={isTypesLoading}
       touched={touched}

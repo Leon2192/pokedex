@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 
-export const Controls = styled.form`
+export const Controls = styled.div`
   display: grid;
   grid-template-columns:
     minmax(180px, 1fr)
     minmax(150px, 190px)
     minmax(170px, 210px)
-    auto
     auto;
   align-items: end;
   gap: 14px;
@@ -65,20 +64,6 @@ export const Select = styled.select`
   }
 `;
 
-export const ActionButton = styled.button`
-  min-height: 42px;
-  padding: 0 16px;
-  border: 0;
-  border-radius: ${({ theme }) => theme.radii.md};
-  color: #ffffff;
-  background: ${({ theme }) => theme.colors.primary};
-  font-weight: 800;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.primaryDark};
-  }
-`;
-
 export const ResetButton = styled.button`
   min-height: 42px;
   padding: 0 16px;
@@ -88,8 +73,13 @@ export const ResetButton = styled.button`
   background: ${({ theme }) => theme.colors.surface};
   font-weight: 800;
 
-  &:hover {
+  &:not(:disabled):hover {
     border-color: ${({ theme }) => theme.colors.textMuted};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
   }
 `;
 

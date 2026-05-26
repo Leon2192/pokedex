@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ActionButton,
   Controls,
   Field,
   FieldError,
@@ -17,15 +16,15 @@ const PokedexControls = ({
   handleGenerationChange,
   handleReset,
   handleSearchChange,
-  handleSubmit,
   handleTypeChange,
+  hasActiveFilters,
   isGenerationsLoading,
   isTypesLoading,
   touched,
   typeOptions,
   values,
 }) => (
-  <Controls onSubmit={handleSubmit}>
+  <Controls>
     <Field>
       <Label htmlFor="search">Buscar</Label>
       <Input
@@ -79,8 +78,7 @@ const PokedexControls = ({
       </Select>
     </Field>
 
-    <ActionButton type="submit">Aplicar</ActionButton>
-    <ResetButton type="button" onClick={handleReset}>
+    <ResetButton type="button" disabled={!hasActiveFilters} onClick={handleReset}>
       Limpiar
     </ResetButton>
   </Controls>
